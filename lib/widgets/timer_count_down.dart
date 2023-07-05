@@ -35,13 +35,13 @@ class Countdown extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CountdownState createState() => _CountdownState();
+  CountdownState createState() => CountdownState();
 }
 
 ///
 /// State of timer
 ///
-class _CountdownState extends State<Countdown> {
+class CountdownState extends State<Countdown> {
   // Multiplier of secconds
   final int _secondsFactor = 1000000;
 
