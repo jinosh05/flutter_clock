@@ -54,9 +54,11 @@ class _CountdownScreenState extends State<CountdownScreen> {
                 onFinished: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
+                      duration: Duration(seconds: 3),
                       content: Text('Timer is done!'),
                     ),
                   );
+                  Navigator.pop(context);
                 },
               ),
             ),

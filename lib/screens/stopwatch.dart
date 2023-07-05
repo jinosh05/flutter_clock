@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_clock/screens/countdown.dart';
 import 'package:flutter_clock/widgets/clock.dart';
 import 'package:sizer_pro/sizer.dart';
 
@@ -30,6 +31,21 @@ class _StopWatchState extends State<StopWatch> {
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return const CountdownScreen();
+                },
+              ));
+            },
+            icon: Icon(
+              Icons.timer_outlined,
+              size: 12.f,
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
