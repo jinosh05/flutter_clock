@@ -12,45 +12,10 @@ class StopWatch extends StatefulWidget {
 
 class _StopWatchState extends State<StopWatch> {
   final _stopWatch = Stopwatch();
-  final List<Duration> _laps = [
-    const Duration(minutes: 2, seconds: 25),
-  ];
+  final List<Duration> _laps = [];
   final _timeout = const Duration(seconds: 1);
 
   final ValueNotifier<Duration> _timeNotifier = ValueNotifier(const Duration());
-
-  void _startStopButtonPressed() {
-    setState(() {
-      if (_stopWatch.isRunning) {
-        _stopWatch.stop();
-      } else {
-        _stopWatch.start();
-        _startTimeout();
-      }
-    });
-  }
-
-  void _resetButtonPressed() {
-    if (_stopWatch.isRunning) {
-      _startStopButtonPressed();
-    }
-    setState(() {
-      _timeNotifier.value = _stopWatch.elapsed;
-      _stopWatch.reset();
-      // _setStopwatchText();
-    });
-  }
-
-  void _startTimeout() {
-    Timer(_timeout, () {
-      _timeNotifier.value = _stopWatch.elapsed;
-      if (_stopWatch.isRunning) {
-        _startTimeout();
-      }
-
-      // _setStopwatchText();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,16 +100,85 @@ class _StopWatchState extends State<StopWatch> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _startStopButtonPressed();
-        },
-        child: Icon(
-          !_stopWatch.isRunning ? Icons.play_arrow : Icons.pause,
-          size: 15.f,
-        ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Visibility(
+            visible: _stopWatch.isRunning,
+            child: FloatingActionButton(
+              heroTag: "addButton",
+              onPressed: () {
+                _addLap();
+              },
+              child: Icon(
+                Icons.add,
+                size: 15.f,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 2.h,
+          ),
+          FloatingActionButton(
+            heroTag: "reset",
+            onPressed: _resetButtonPressed,
+            child: Icon(
+              Icons.refresh_outlined,
+              size: 15.f,
+            ),
+          ),
+          SizedBox(
+            height: 2.h,
+          ),
+          FloatingActionButton(
+            heroTag: "playButton",
+            onPressed: _startStopButtonPressed,
+            child: Icon(
+              !_stopWatch.isRunning ? Icons.play_arrow : Icons.pause,
+              size: 15.f,
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  void _startStopButtonPressed() {
+    setState(() {
+      if (_stopWatch.isRunning) {
+        _laps.add(_stopWatch.elapsed);
+        _stopWatch.stop();
+      } else {
+        _stopWatch.start();
+        _startTimeout();
+      }
+    });
+  }
+
+  void _resetButtonPressed() {
+    if (_stopWatch.isRunning) {
+      _startStopButtonPressed();
+    }
+    setState(() {
+      _timeNotifier.value = _stopWatch.elapsed;
+      _laps.clear();
+      _stopWatch.reset();
+    });
+  }
+
+  void _startTimeout() {
+    Timer(_timeout, () {
+      _timeNotifier.value = _stopWatch.elapsed;
+      if (_stopWatch.isRunning) {
+        _startTimeout();
+      }
+    });
+  }
+
+  void _addLap() {
+    setState(() {
+      _laps.add(_stopWatch.elapsed);
+    });
   }
 
   String _setStopwatchText(Duration time) {
