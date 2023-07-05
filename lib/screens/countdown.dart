@@ -32,44 +32,69 @@ class _CountdownScreenState extends State<CountdownScreen> {
       ),
       body: Column(
         children: [
-          Clock(
-            child: Countdown(
-              controller: _controller,
-              seconds: duration.inSeconds,
-              build: (_, double time) => Text(
-                _getDurationText(
-                  Duration(
-                    seconds: time.toInt(),
+          InkWell(
+            onTap: () {
+              _getDuration(context).showDialog(context);
+            },
+            child: Clock(
+              child: Countdown(
+                controller: _controller,
+                seconds: duration.inSeconds,
+                build: (_, double time) => Text(
+                  _getDurationText(
+                    Duration(
+                      seconds: time.toInt(),
+                    ),
+                  ),
+                  style: TextStyle(
+                    fontSize: 12.f,
                   ),
                 ),
-                style: TextStyle(
-                  fontSize: 12.f,
-                ),
+                interval: const Duration(seconds: 1),
+                onFinished: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Timer is done!'),
+                    ),
+                  );
+                },
               ),
-              interval: const Duration(milliseconds: 100),
-              onFinished: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Timer is done!'),
-                  ),
-                );
-              },
             ),
           ),
-          const Row(
-            children: [],
-          )
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              // Start
+              ElevatedButton(
+                child: const Text('Start'),
+                onPressed: () {
+                  _controller.start();
+                },
+              ),
+              // Pause
+              ElevatedButton(
+                child: const Text('Pause'),
+                onPressed: () {
+                  _controller.pause();
+                },
+              ),
+              // Resume
+              ElevatedButton(
+                child: const Text('Resume'),
+                onPressed: () {
+                  _controller.resume();
+                },
+              ),
+              // Stop
+              ElevatedButton(
+                child: const Text('Restart'),
+                onPressed: () {
+                  _controller.restart();
+                },
+              ),
+            ],
+          ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: "playButton",
-        onPressed: () {
-          _getDuration(context).showDialog(context);
-        },
-        child: Icon(
-          Icons.play_arrow,
-          size: 15.f,
-        ),
       ),
     );
   }
