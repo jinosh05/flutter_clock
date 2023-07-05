@@ -123,6 +123,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.3"
+  sizer_pro:
+    dependency: "direct main"
+    description:
+      name: sizer_pro
+      sha256: "9ee765d9a1460e22e225ed0a2e8079fb2d48fc44abc5bb8980ce890e5cbb2daa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   sky_engine:
     dependency: transitive
     description: flutter
