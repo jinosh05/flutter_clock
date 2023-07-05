@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_clock/screens/stopwatch.dart';
+import 'package:flutter_clock/screens/countdown.dart';
 import 'package:sizer_pro/sizer.dart';
 
 void main(List<String> args) {
@@ -14,11 +14,11 @@ class Main extends StatelessWidget {
     return Sizer(
       builder: (context, orientation, deviceType) {
         return MaterialApp(
-          theme: ThemeData.dark(
-            useMaterial3: true,
-          ),
-          home: const StopWatch(),
-        );
+            theme: ThemeData.dark(
+              useMaterial3: true,
+            ),
+            home: const CountdownScreen() //const StopWatch(),
+            );
       },
     );
   }
