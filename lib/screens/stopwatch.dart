@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sizer_pro/sizer.dart';
 
@@ -13,6 +15,43 @@ class _StopWatchState extends State<StopWatch> {
   final List<Duration> _laps = [
     const Duration(minutes: 2, seconds: 25),
   ];
+  final _timeout = const Duration(seconds: 1);
+
+  final ValueNotifier<Duration> _timeNotifier = ValueNotifier(const Duration());
+
+  void _startStopButtonPressed() {
+    setState(() {
+      if (_stopWatch.isRunning) {
+        _stopWatch.stop();
+      } else {
+        _stopWatch.start();
+        _startTimeout();
+      }
+    });
+  }
+
+  void _resetButtonPressed() {
+    if (_stopWatch.isRunning) {
+      _startStopButtonPressed();
+    }
+    setState(() {
+      _timeNotifier.value = _stopWatch.elapsed;
+      _stopWatch.reset();
+      // _setStopwatchText();
+    });
+  }
+
+  void _startTimeout() {
+    Timer(_timeout, () {
+      _timeNotifier.value = _stopWatch.elapsed;
+      if (_stopWatch.isRunning) {
+        _startTimeout();
+      }
+
+      // _setStopwatchText();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +71,7 @@ class _StopWatchState extends State<StopWatch> {
             child: Container(
               width: 35.w,
               height: 35.w,
+              alignment: Alignment.center,
               margin: EdgeInsets.symmetric(vertical: 5.h),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -48,6 +88,18 @@ class _StopWatchState extends State<StopWatch> {
                   ),
                 ],
                 color: const Color(0xFF292D32),
+              ),
+              child: ValueListenableBuilder<Duration>(
+                valueListenable: _timeNotifier,
+                builder: (BuildContext context, Duration value, Widget? _) {
+                  return Text(
+                    _setStopwatchText(_stopWatch.elapsed),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.f,
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -82,6 +134,15 @@ class _StopWatchState extends State<StopWatch> {
             ),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _startStopButtonPressed();
+        },
+        child: Icon(
+          !_stopWatch.isRunning ? Icons.play_arrow : Icons.pause,
+          size: 15.f,
+        ),
       ),
     );
   }
