@@ -1,6 +1,6 @@
 # flutter_clock
 
-A new Flutter project.
+A simple Flutter project with stopwatch and Countdown timer.
 
 ## Getting Started
 
