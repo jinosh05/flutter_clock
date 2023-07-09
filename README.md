@@ -1,4 +1,4 @@
 # flutter_clock
 
-A simple Flutter project with stopwatch and Countdown timer.
+A Simple Flutter project with Stopwatch and Countdown timer.
 
